@@ -12,74 +12,230 @@
         <!-- Header -->
         <header class="header">
             <div class="header-left">
-                <i class="fas fa-cog settings-icon"></i>
+                <i class="fas fa-cog settings-icon" id="settingsBtn"></i>
             </div>
             <h1 class="title">Mira</h1>
             <div class="header-right">
-                <i class="fas fa-search search-icon"></i>
+                <i class="fas fa-search search-icon" id="searchBtn"></i>
             </div>
         </header>
 
+        <!-- Voice Control Panel -->
+        <div class="voice-control-panel">
+            <div class="voice-status">
+                <i class="fas fa-microphone voice-icon" id="voiceToggle"></i>
+                <span class="voice-status-text" id="voiceStatus">Voice: Off</span>
+            </div>
+            <div class="voice-controls">
+                <button class="voice-btn" id="startVoice">
+                    <i class="fas fa-play"></i> Start Voice
+                </button>
+                <button class="voice-btn" id="stopVoice">
+                    <i class="fas fa-stop"></i> Stop Voice
+                </button>
+            </div>
+        </div>
+
         <!-- Assistant Card -->
-        <div class="assistant-card">
+        <div class="assistant-card" id="assistantCard">
             <div class="assistant-content">
-                <div class="assistant-text">assistant button</div>
+                <div class="assistant-text">Click to activate AI Assistant</div>
                 <div class="chart-container">
                     <canvas id="aiChart" width="200" height="60"></canvas>
                 </div>
             </div>
+            <div class="assistant-actions">
+                <button class="assistant-btn" id="activateAssistant">
+                    <i class="fas fa-robot"></i> Activate AI
+                </button>
+            </div>
         </div>
 
-        <!-- Prompt Cards -->
-        <div class="prompts-container">
-            <div class="prompt-card red">
-                <div class="prompt-content">
-                    <span class="prompt-text">{ prompt }</span>
+        <!-- Activity Stats -->
+        <div class="activity-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
                 </div>
-                <div class="prompt-actions">
-                    <i class="fas fa-edit edit-icon"></i>
-                    <i class="fas fa-copy copy-icon"></i>
+                <div class="stat-content">
+                    <div class="stat-number" id="totalPrompts">0</div>
+                    <div class="stat-label">Total Prompts</div>
                 </div>
             </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="todayUsage">0</div>
+                    <div class="stat-label">Today's Usage</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="favorites">0</div>
+                    <div class="stat-label">Favorites</div>
+                </div>
+            </div>
+        </div>
 
-            <div class="prompt-card green">
-                <div class="prompt-content">
-                    <span class="prompt-text">{ prompt }</span>
-                </div>
-                <div class="prompt-actions">
-                    <i class="fas fa-edit edit-icon"></i>
-                    <i class="fas fa-copy copy-icon"></i>
-                </div>
-            </div>
-
-            <div class="prompt-card blue">
-                <div class="prompt-content">
-                    <span class="prompt-text">{ prompt }</span>
-                </div>
-                <div class="prompt-actions">
-                    <i class="fas fa-edit edit-icon"></i>
-                    <i class="fas fa-copy copy-icon"></i>
-                </div>
-            </div>
-
-            <div class="prompt-card purple">
-                <div class="prompt-content">
-                    <span class="prompt-text">{ prompt }</span>
-                </div>
-                <div class="prompt-actions">
-                    <i class="fas fa-edit edit-icon"></i>
-                    <i class="fas fa-copy copy-icon"></i>
-                </div>
-            </div>
+        <!-- Prompt Cards Container -->
+        <div class="prompts-container" id="promptsContainer">
+            <!-- Dynamic prompt cards will be added here -->
         </div>
 
         <!-- Add New Prompt Button -->
         <div class="add-prompt-container">
-            <button class="add-prompt-btn">
+            <button class="add-prompt-btn" id="addPromptBtn">
                 <i class="fas fa-plus"></i>
             </button>
         </div>
     </div>
+
+    <!-- Prompt Input Modal -->
+    <div class="modal" id="promptModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Prompt</h2>
+                <span class="close" id="closeModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="promptTitle">Prompt Title:</label>
+                    <input type="text" id="promptTitle" placeholder="Enter prompt title..." />
+                </div>
+                <div class="input-group">
+                    <label for="promptContent">Prompt Content:</label>
+                    <textarea id="promptContent" placeholder="Enter your prompt here..." rows="4"></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="promptCategory">Category:</label>
+                    <select id="promptCategory">
+                        <option value="general">General</option>
+                        <option value="creative">Creative</option>
+                        <option value="technical">Technical</option>
+                        <option value="business">Business</option>
+                        <option value="personal">Personal</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="promptColor">Color Theme:</label>
+                    <div class="color-picker">
+                        <div class="color-option red" data-color="red"></div>
+                        <div class="color-option green" data-color="green"></div>
+                        <div class="color-option blue" data-color="blue"></div>
+                        <div class="color-option purple" data-color="purple"></div>
+                        <div class="color-option orange" data-color="orange"></div>
+                        <div class="color-option teal" data-color="teal"></div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="isFavorite" />
+                        <span class="checkmark"></span>
+                        Mark as Favorite
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                <button class="btn btn-primary" id="savePromptBtn">
+                    <i class="fas fa-save"></i> Save Prompt
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Response Modal -->
+    <div class="modal" id="aiResponseModal">
+        <div class="modal-content ai-response">
+            <div class="modal-header">
+                <h2>AI Assistant Response</h2>
+                <span class="close" id="closeAIResponse">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="ai-input-section">
+                    <h3>Your Input:</h3>
+                    <div class="ai-input-display" id="aiInputDisplay"></div>
+                </div>
+                <div class="ai-response-section">
+                    <h3>AI Response:</h3>
+                    <div class="ai-response-display" id="aiResponseDisplay">
+                        <div class="typing-indicator">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ai-actions">
+                    <button class="btn btn-secondary" id="copyResponseBtn">
+                        <i class="fas fa-copy"></i> Copy Response
+                    </button>
+                    <button class="btn btn-primary" id="saveResponseBtn">
+                        <i class="fas fa-save"></i> Save Response
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <span class="close" id="closeSettings">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h3>Voice Settings</h3>
+                    <div class="input-group">
+                        <label for="voiceSpeed">Voice Speed:</label>
+                        <input type="range" id="voiceSpeed" min="0.5" max="2" step="0.1" value="1" />
+                        <span id="voiceSpeedValue">1x</span>
+                    </div>
+                    <div class="input-group">
+                        <label for="voicePitch">Voice Pitch:</label>
+                        <input type="range" id="voicePitch" min="0.5" max="2" step="0.1" value="1" />
+                        <span id="voicePitchValue">1x</span>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>Auto-Learning</h3>
+                    <div class="input-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="autoLearning" checked />
+                            <span class="checkmark"></span>
+                            Enable Auto-Learning
+                        </label>
+                    </div>
+                    <div class="input-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="voiceInput" checked />
+                            <span class="checkmark"></span>
+                            Enable Voice Input
+                        </label>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>Data Management</h3>
+                    <button class="btn btn-secondary" id="exportDataBtn">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                    <button class="btn btn-danger" id="clearDataBtn">
+                        <i class="fas fa-trash"></i> Clear All Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
 
     <script src="script.js"></script>
 </body>
